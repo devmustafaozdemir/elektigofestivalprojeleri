@@ -884,7 +884,6 @@
         <div class="modal-header">
           <div>
             <div class="modal-meta-row">
-              <span class="modal-cat-label" id="mCat"></span>
               <span class="modal-mec-label" id="mMec"></span>
             </div>
             <div class="modal-title" id="mTitle"></div>
@@ -1020,6 +1019,28 @@ const GAMES = [
     ],
     webglPath: "games/atik-yagmuru/index.html",
     platform: "WebGL · Kiosk & Dokunmatik"
+  },
+  {
+    id: 2,
+    title: "Bayrağı Bul",
+    category: "Sürükle & Bırak",
+    mechanic: "Sürükle & Bırak",
+    description: "Bayrağı Bul, oyuncuların ekranda beliren çok sayıdaki bayrak arasından hedef bayrağı en hızlı şekilde bulmaya çalıştığı dikkat ve refleks odaklı bir dijital oyundur. Süre dolmadan ne kadar çok doğru bayrak bulunursa o kadar yüksek puan kazanılır.",
+    features: [
+      "Kurumsal kimliğe uygun özelleştirme",
+      "Kiosk, dokunmatik ekran ve tablet uyumlu",
+      "Çevrimdışı veya çevrimiçi çalışabilir"
+    ],
+    brands: ["Ülker"],
+    logo: "assets/logos/bayragi-bul.png",
+    screenshots: [
+      "assets/screens/bayragi-bul-1.png",
+      "assets/screens/bayragi-bul-2.png",
+      "assets/screens/bayragi-bul-3.png",
+      "assets/screens/bayragi-bul-4.png"
+    ],
+    webglPath: "games/bayragi-bul/index.html",
+    platform: "WebGL · Kiosk & Dokunmatik"
   }
 ];
 
@@ -1114,7 +1135,6 @@ function renderGrid() {
         <img src="${thumb}" alt="${g.title}" onerror="this.src='${PH_LOGO}'">
         <div class="card-overlay"></div>
         <div class="card-badges">
-          <span class="cat-badge ${cls}">${g.category}</span>
           ${g.mechanic ? `<span class="mec-badge">${g.mechanic}</span>` : ''}
         </div>
       </div>
@@ -1140,7 +1160,6 @@ function openModal(id) {
   if (!currentGame) return;
   const g = currentGame;
 
-  document.getElementById('mCat').textContent = g.category;
   document.getElementById('mMec').textContent = g.mechanic || '';
   document.getElementById('mTitle').textContent = g.title;
   document.getElementById('mDesc').textContent = g.description;
