@@ -395,11 +395,14 @@
       background: var(--surface);
       border-radius: 24px;
       width: 100%;
-      max-width: 900px;
+      max-width: 960px;
+      max-height: calc(100vh - 48px);
       margin: auto;
       overflow: hidden;
       box-shadow: var(--shadow-xl);
       animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex;
+      flex-direction: column;
     }
     @keyframes modalIn {
       from { transform: translateY(32px) scale(0.98); opacity: 0; }
@@ -407,7 +410,6 @@
     }
 
     .modal-header {
-      padding: 32px 36px 0;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -442,61 +444,42 @@
     }
     .modal-close:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-focus); }
 
-    /* Gallery */
-    .gallery {
-      padding: 24px 36px;
-    }
-    .gallery-main {
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      background: var(--surface-2);
-      aspect-ratio: 16 / 9;
-      margin-bottom: 10px;
-      cursor: zoom-in;
-    }
-    .gallery-main img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.3s ease;
-    }
-    .gallery-main:hover img { transform: scale(1.02); }
-    .gallery-thumbs {
-      display: flex;
-      gap: 8px;
-    }
-    .thumb {
-      width: 88px;
-      height: 56px;
-      flex-shrink: 0;
-      border-radius: var(--radius-xs);
-      overflow: hidden;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.18s;
-      background: var(--surface-2);
-    }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .thumb.active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-    .thumb:not(.active):hover { border-color: var(--border-focus); }
-
-    .modal-content {
-      padding: 4px 36px 32px;
+    /* Modal two-column layout */
+    .modal-body {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 36px;
+      grid-template-columns: 1fr 300px;
+      min-height: 0;
     }
+
+    /* LEFT: info panel */
+    .modal-left {
+      display: flex;
+      flex-direction: column;
+      padding: 28px 32px 28px 36px;
+      border-right: 1px solid var(--border);
+      min-height: 0;
+      overflow-y: auto;
+    }
+    .modal-left .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+    .content-block { margin-bottom: 24px; }
+    .content-block:last-child { margin-bottom: 0; }
     .content-block h3 {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-muted);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .modal-desc {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       line-height: 1.75;
       color: var(--text);
     }
@@ -504,13 +487,13 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 8px;
     }
     .feature-list li {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: var(--text);
       line-height: 1.4;
     }
@@ -524,14 +507,59 @@
       justify-content: center;
     }
     .feature-check svg { width: 11px; height: 11px; }
-
     .modal-footer {
-      padding: 20px 36px;
+      margin-top: auto;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 12px;
     }
+
+    /* RIGHT: portrait gallery */
+    .modal-right {
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-2);
+      border-radius: 0 24px 24px 0;
+      overflow: hidden;
+      padding: 16px 14px 14px;
+      gap: 10px;
+    }
+    .gallery-main {
+      flex: 1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--surface-3);
+      min-height: 0;
+    }
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .thumb {
+      width: 44px;
+      height: 72px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.18s;
+      background: var(--surface-3);
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb.active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .thumb:not(.active):hover { border-color: var(--border-focus); }
     .btn-play {
       display: flex;
       align-items: center;
@@ -678,8 +706,9 @@
       .hero-stats { gap: 20px; }
       .filter-section, .grid-section { padding: 0 16px; }
       .games-grid { grid-template-columns: 1fr; gap: 16px; }
-      .modal-header, .gallery, .modal-content, .modal-footer { padding-left: 20px; padding-right: 20px; }
-      .modal-content { grid-template-columns: 1fr; gap: 24px; }
+      .modal-body { grid-template-columns: 1fr; }
+      .modal-right { border-radius: 0 0 24px 24px; border-right: none; border-top: 1px solid var(--border); height: 420px; }
+      .modal-left { border-right: none; }
       .modal-title { font-size: 1.5rem; }
     }
   </style>
@@ -748,51 +777,58 @@
 <!-- MODAL -->
 <div class="modal-overlay" id="overlay" onclick="handleOverlayClick(event)">
   <div class="modal" id="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-cat-label" id="mCat"></div>
-        <div class="modal-title" id="mTitle"></div>
-      </div>
-      <button class="modal-close" onclick="closeModal()" aria-label="Kapat">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
+    <div class="modal-body">
 
-    <div class="gallery">
-      <div class="gallery-main">
-        <img id="mainImg" src="" alt="Ekran Görüntüsü">
-      </div>
-      <div class="gallery-thumbs" id="thumbs"></div>
-    </div>
-
-    <div class="modal-content">
-      <div class="content-block">
-        <h3>Açıklama</h3>
-        <p class="modal-desc" id="mDesc"></p>
-      </div>
-      <div class="content-block">
-        <h3>Özellikler</h3>
-        <ul class="feature-list" id="mFeatures"></ul>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn-play" onclick="launchWebGL()">
-        <div class="play-icon">
-          <svg width="10" height="12" viewBox="0 0 10 12" fill="white">
-            <path d="M0 0l10 6-10 6V0z"/>
-          </svg>
+      <!-- SOL: bilgi paneli -->
+      <div class="modal-left">
+        <div class="modal-header">
+          <div>
+            <div class="modal-cat-label" id="mCat"></div>
+            <div class="modal-title" id="mTitle"></div>
+          </div>
+          <button class="modal-close" onclick="closeModal()" aria-label="Kapat">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
-        Oyna
-      </button>
-      <div class="modal-platform" id="mPlatform">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-        </svg>
-        <span></span>
+
+        <div class="content-block">
+          <h3>Açıklama</h3>
+          <p class="modal-desc" id="mDesc"></p>
+        </div>
+
+        <div class="content-block">
+          <h3>Özellikler</h3>
+          <ul class="feature-list" id="mFeatures"></ul>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-play" onclick="launchWebGL()">
+            <div class="play-icon">
+              <svg width="10" height="12" viewBox="0 0 10 12" fill="white">
+                <path d="M0 0l10 6-10 6V0z"/>
+              </svg>
+            </div>
+            Oyna
+          </button>
+          <div class="modal-platform" id="mPlatform">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+            <span></span>
+          </div>
+        </div>
       </div>
+
+      <!-- SAĞ: portrait galeri -->
+      <div class="modal-right">
+        <div class="gallery-main">
+          <img id="mainImg" src="" alt="Ekran Görüntüsü">
+        </div>
+        <div class="gallery-thumbs" id="thumbs"></div>
+      </div>
+
     </div>
   </div>
 </div>
