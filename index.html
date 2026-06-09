@@ -307,18 +307,40 @@
       transition: opacity 0.2s;
     }
     .game-card:hover .card-overlay { opacity: 1; }
-    .cat-badge {
+    .card-badges {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      padding: 5px 12px;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 6px;
+      pointer-events: none;
+    }
+    .cat-badge {
+      padding: 5px 10px;
       border-radius: 100px;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+    .mec-badge {
+      padding: 5px 10px;
+      border-radius: 100px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(15,23,42,0.55);
+      color: rgba(255,255,255,0.92);
+      white-space: nowrap;
     }
     .card-body {
       padding: 20px 22px 14px;
@@ -368,14 +390,12 @@
     .game-card:hover .card-action { gap: 8px; }
 
     /* ─── CATEGORY COLORS ─── */
-    .cat-eslestirme  { background: rgba(219,234,254,0.9); color: #1e40af; }
-    .cat-surukle     { background: rgba(254,243,199,0.9); color: #92400e; }
-    .cat-dogru       { background: rgba(220,252,231,0.9); color: #166534; }
-    .cat-quiz        { background: rgba(252,231,243,0.9); color: #9d174d; }
-    .cat-hafiza      { background: rgba(255,247,237,0.9); color: #9a3412; }
-    .cat-bulmaca     { background: rgba(237,233,254,0.9); color: #5b21b6; }
-    .cat-coktan      { background: rgba(254,235,200,0.9); color: #7c2d12; }
-    .cat-diger       { background: rgba(241,245,249,0.9); color: #475569; }
+    .cat-kultur   { background: rgba(254,243,199,0.9); color: #92400e; }
+    .cat-cevre    { background: rgba(220,252,231,0.9); color: #166534; }
+    .cat-cografya { background: rgba(219,234,254,0.9); color: #1e40af; }
+    .cat-genel    { background: rgba(237,233,254,0.9); color: #5b21b6; }
+    .cat-egitim   { background: rgba(224,242,254,0.9); color: #0369a1; }
+    .cat-diger    { background: rgba(241,245,249,0.9); color: #475569; }
 
     /* ─── MODAL ─── */
     .modal-overlay {
@@ -414,13 +434,30 @@
       justify-content: space-between;
       gap: 16px;
     }
+    .modal-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
     .modal-cat-label {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--primary);
-      margin-bottom: 6px;
+    }
+    .modal-mec-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding: 2px 8px;
+      background: var(--surface-2);
+      border-radius: 100px;
+      border: 1px solid var(--border);
     }
     .modal-title {
       font-size: 2rem;
@@ -665,6 +702,57 @@
       font-size: 0.8rem;
     }
 
+    /* ─── MARKALAR ─── */
+    .brands-block { margin-top: 4px; }
+    .brands-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .brand-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* ─── LİGHTBOX ─── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-height: 92vh;
+      max-width: 92vw;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .hero { padding: 56px 20px 52px; }
@@ -673,9 +761,33 @@
       .filter-section, .grid-section { padding: 0 16px; }
       .games-grid { grid-template-columns: 1fr; gap: 16px; }
       .modal-body { grid-template-columns: 1fr; }
-      .modal-right { border-radius: 0 0 24px 24px; border-right: none; border-top: 1px solid var(--border); height: 420px; }
       .modal-left { border-right: none; }
       .modal-title { font-size: 1.5rem; }
+
+      /* Mobilde sağ galeri: sadece thumbnail'lar */
+      .modal-right {
+        border-radius: 0 0 24px 24px;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding: 14px;
+        height: auto;
+      }
+      .gallery-main { display: none; }
+      .gallery-thumbs {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .thumb {
+        width: 64px;
+        height: 100px;
+        cursor: zoom-in;
+      }
+
+      /* Mobilde footer: Oyna ortalı, platform gizli */
+      .modal-footer { justify-content: center; }
+      .modal-platform { display: none; }
+      .btn-play { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -702,7 +814,7 @@
     </div>
     <h1>
       Etkileşimli<br>
-      <span class="gradient-text">WebGL Oyunları</span>
+      <span class="gradient-text">Mobil Oyunlar</span>
     </h1>
     <p class="hero-desc">
       Fuarlar ve etkinlikler için özel geliştirilmiş interaktif oyunları keşfedin.<br>
@@ -748,7 +860,10 @@
       <div class="modal-left">
         <div class="modal-header">
           <div>
-            <div class="modal-cat-label" id="mCat"></div>
+            <div class="modal-meta-row">
+              <span class="modal-cat-label" id="mCat"></span>
+              <span class="modal-mec-label" id="mMec"></span>
+            </div>
             <div class="modal-title" id="mTitle"></div>
           </div>
           <button class="modal-close" onclick="closeModal()" aria-label="Kapat">
@@ -766,6 +881,11 @@
         <div class="content-block">
           <h3>Özellikler</h3>
           <ul class="feature-list" id="mFeatures"></ul>
+        </div>
+
+        <div class="content-block brands-block" id="mBrandsBlock" style="display:none">
+          <h3>Markalar</h3>
+          <div class="brands-list" id="mBrands"></div>
         </div>
 
         <div class="modal-footer">
@@ -798,6 +918,16 @@
   </div>
 </div>
 
+<!-- LİGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+      <path d="M1 1l10 10M11 1L1 11" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <!-- WEBGL OVERLAY -->
 <div class="webgl-overlay" id="webglOverlay">
   <iframe class="webgl-frame" id="webglFrame" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
@@ -826,15 +956,15 @@ const GAMES = [
   {
     id: 0,
     title: "Motifi Tamamla",
-    category: "Çoktan Seçmeli",
+    category: "Kültür & Sanat",
+    mechanic: "Çoktan Seçmeli",
     description: "Motifi Tamamla, geleneksel ve kültürel motiflerin eksik parçalarını doğru şekilde tamamlayarak dikkat, görsel algı ve desen tanıma becerilerini geliştiren eğlenceli bir dijital zeka oyunudur. Oyuncular, süre dolmadan mümkün olan en fazla motifi tamamlayarak yüksek puan elde etmeye çalışır.",
     features: [
-      "Unity oyun motoru ile geliştirilmiştir",
-      "WebGL, Windows PC ve Android desteği",
       "Kurumsal kimliğe uygun özelleştirme",
       "Kiosk, dokunmatik ekran ve tablet uyumlu",
       "Çevrimdışı veya çevrimiçi çalışabilir"
     ],
+    brands: ["Ülker"],
     logo: "assets/logos/motifi-tamamla.png",
     screenshots: [
       "assets/screens/motifi-tamamla-1.png",
@@ -845,6 +975,28 @@ const GAMES = [
     ],
     webglPath: "games/motifi-tamamla/index.html",
     platform: "WebGL · Kiosk & Dokunmatik"
+  },
+  {
+    id: 1,
+    title: "Atık Yağmuru",
+    category: "Çevre",
+    mechanic: "Aksiyon",
+    description: "Atık Yağmuru, gökyüzünden düşen geri dönüştürülebilir atıkları doğru kutularda toplayarak çevre bilincini eğlenceli bir şekilde geliştiren refleks ve dikkat odaklı bir dijital oyundur. Oyuncular, süre dolmadan en yüksek puanı elde etmek için hızlı ve doğru kararlar vermeye çalışır.",
+    features: [
+      "Kurumsal kimliğe uygun özelleştirme",
+      "Kiosk, dokunmatik ekran ve tablet uyumlu",
+      "Çevrimdışı veya çevrimiçi çalışabilir"
+    ],
+    logo: "assets/logos/atik-yagmuru.png",
+    screenshots: [
+      "assets/screens/atik-yagmuru-1.png",
+      "assets/screens/atik-yagmuru-2.png",
+      "assets/screens/atik-yagmuru-3.png",
+      "assets/screens/atik-yagmuru-4.png",
+      "assets/screens/atik-yagmuru-5.png"
+    ],
+    webglPath: "games/atik-yagmuru/index.html",
+    platform: "WebGL · Kiosk & Dokunmatik"
   }
 ];
 
@@ -852,13 +1004,11 @@ const GAMES = [
    KATEGORİ → CSS SINIFI
 ============================================================ */
 const CAT_CLASS = {
-  "Eşleştirme":     "cat-eslestirme",
-  "Doğru/Yanlış":  "cat-dogru",
-  "Sürükle-Bırak": "cat-surukle",
-  "Quiz":           "cat-quiz",
-  "Hafıza":         "cat-hafiza",
-  "Bulmaca":        "cat-bulmaca",
-  "Çoktan Seçmeli": "cat-coktan",
+  "Kültür & Sanat": "cat-kultur",
+  "Çevre":          "cat-cevre",
+  "Coğrafya":       "cat-cografya",
+  "Genel Kültür":   "cat-genel",
+  "Eğitim":         "cat-egitim",
   "Diğer":          "cat-diger"
 };
 
@@ -939,7 +1089,10 @@ function renderGrid() {
       <div class="card-thumbnail">
         <img src="${thumb}" alt="${g.title}" onerror="this.src='${PH_LOGO}'">
         <div class="card-overlay"></div>
-        <span class="cat-badge ${cls}">${g.category}</span>
+        <div class="card-badges">
+          <span class="cat-badge ${cls}">${g.category}</span>
+          ${g.mechanic ? `<span class="mec-badge">${g.mechanic}</span>` : ''}
+        </div>
       </div>
       <div class="card-body">
         <div class="card-title">${g.title}</div>
@@ -970,6 +1123,7 @@ function openModal(id) {
   const g = currentGame;
 
   document.getElementById('mCat').textContent = g.category;
+  document.getElementById('mMec').textContent = g.mechanic || '';
   document.getElementById('mTitle').textContent = g.title;
   document.getElementById('mDesc').textContent = g.description;
   document.querySelector('#mPlatform span').textContent = g.platform;
@@ -985,7 +1139,7 @@ function openModal(id) {
 
   document.getElementById('thumbs').innerHTML = screens.map((s, i) => {
     const src = s || PH_SCREEN;
-    return `<div class="thumb ${i === 0 ? 'active' : ''}" onclick="setMain('${src}', this)">
+    return `<div class="thumb ${i === 0 ? 'active' : ''}" onclick="setMain('${src}', this); openLightbox('${src}')">
       <img src="${src}" alt="" onerror="this.src='${PH_SCREEN}'">
     </div>`;
   }).join('');
@@ -1000,6 +1154,16 @@ function openModal(id) {
       </span>
       ${f}
     </li>`).join('');
+
+  /* Markalar */
+  const brandsBlock = document.getElementById('mBrandsBlock');
+  if (g.brands && g.brands.length) {
+    document.getElementById('mBrands').innerHTML = g.brands.map(b =>
+      `<span class="brand-tag">${b}</span>`).join('');
+    brandsBlock.style.display = '';
+  } else {
+    brandsBlock.style.display = 'none';
+  }
 
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1033,9 +1197,24 @@ function closeWebGL() {
   document.getElementById('webglFrame').src = '';
 }
 
+/* ─── LİGHTBOX ─── */
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  /* Sadece mobilde aç */
+  if (window.innerWidth > 768) return;
+  document.getElementById('lightboxImg').src = src;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 /* ESC key */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeWebGL(); }
+  if (e.key === 'Escape') { closeModal(); closeWebGL(); closeLightbox(); }
 });
 
 /* ─── INIT ─── */
