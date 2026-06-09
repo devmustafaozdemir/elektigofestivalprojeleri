@@ -8,19 +8,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-light: #818cf8;
-      --primary-dark: #4f46e5;
-      --primary-glow: rgba(99,102,241,0.18);
-      --bg: #f8fafc;
+      --primary: #0098D4;
+      --primary-light: #33B8E8;
+      --primary-dark: #0077A8;
+      --primary-glow: rgba(0,152,212,0.15);
+      --bg: #f4f8fb;
       --surface: #ffffff;
-      --surface-2: #f1f5f9;
-      --surface-3: #e8eef6;
+      --surface-2: #eef5fa;
+      --surface-3: #ddeef7;
       --text: #0f172a;
-      --text-muted: #64748b;
-      --text-subtle: #94a3b8;
-      --border: #e2e8f0;
-      --border-focus: #a5b4fc;
+      --text-muted: #4a6070;
+      --text-subtle: #7a9baf;
+      --border: #d4e6f0;
+      --border-focus: #0098D4;
       --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
       --shadow-sm: 0 1px 8px rgba(0,0,0,0.07);
       --shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -69,23 +69,22 @@
       gap: 10px;
       text-decoration: none;
     }
-    .brand-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--primary);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+    .brand-logo {
+      height: 32px;
+      width: auto;
+      display: block;
     }
-    .brand-name {
-      font-size: 1.15rem;
-      font-weight: 800;
+    /* Fallback text logo (logo dosyası yüklenene kadar) */
+    .brand-text {
+      font-size: 1.4rem;
+      font-weight: 900;
       letter-spacing: -0.5px;
       color: var(--text);
+      line-height: 1;
     }
-    .brand-name span { color: var(--primary); }
+    .brand-text span {
+      color: var(--primary);
+    }
     .nav-right {
       display: flex;
       align-items: center;
@@ -106,7 +105,7 @@
     .hero {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(160deg, #f0f4ff 0%, #fafbff 40%, #f5f0ff 70%, #f0fff8 100%);
+      background: linear-gradient(160deg, #e8f5fd 0%, #f4faff 40%, #eef7fc 70%, #f0faff 100%);
       border-bottom: 1px solid var(--border);
       padding: 80px 28px 72px;
       text-align: center;
@@ -154,7 +153,7 @@
       color: var(--text);
     }
     .hero h1 .gradient-text {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+      background: linear-gradient(135deg, #0077A8 0%, #0098D4 50%, #33C3F0 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -686,8 +685,7 @@
 <nav>
   <div class="nav-inner">
     <a class="brand" href="#">
-      <div class="brand-icon">🎮</div>
-      <span class="brand-name">Oyun<span>Kataloğu</span></span>
+      <img class="brand-logo" src="assets/elektigo-logo.png" alt="ElektiGO">
     </a>
     <div class="nav-right">
       <div class="nav-badge"><span id="navCount">10</span> Oyun</div>
@@ -847,176 +845,6 @@ const GAMES = [
     ],
     webglPath: "games/motifi-tamamla/index.html",
     platform: "WebGL · Kiosk & Dokunmatik"
-  },
-  {
-    id: 1,
-    title: "Kelime Eşleştirme",
-    category: "Eşleştirme",
-    description: "Ekranda beliren kelimeleri doğru eşleriyle eşleştirin. Zaman baskısı altında hızlı düşünme ve kelime bilgisini geliştirmeye yönelik bu oyun, fuar alanında yüksek etkileşim sağlar.",
-    features: [
-      "2–4 oyuncu desteği",
-      "3 zorluk seviyesi",
-      "Animasyonlu geri bildirim",
-      "Anlık puan tablosu",
-      "Özelleştirilebilir kelime seti"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/kelime-eslestirme/index.html",
-    platform: "WebGL · Masaüstü & Tablet"
-  },
-  {
-    id: 2,
-    title: "Doğru mu Yanlış mı?",
-    category: "Doğru/Yanlış",
-    description: "Hızlıca karşınıza çıkan ifadeleri doğru veya yanlış olarak sınıflandırın. Saniyeler içinde karar vermeniz gereken bu oyun, genel kültür ve ürün bilgisini test eder.",
-    features: [
-      "Sonsuz soru havuzu",
-      "Anlık skor güncelleme",
-      "Özel soru paketi yükleme",
-      "Liderlik tablosu",
-      "Tüm cihazlarda çalışır"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/dogru-yanlis/index.html",
-    platform: "WebGL · Tüm Cihazlar"
-  },
-  {
-    id: 3,
-    title: "Sürükle & Yerleştir",
-    category: "Sürükle-Bırak",
-    description: "Parçaları doğru konumlarına sürükleyerek tamamlayın. Ürün bileşenlerini, süreç adımlarını veya kavramsal içerikleri öğretmek için ideal bir format.",
-    features: [
-      "Dokunmatik ekran desteği",
-      "Animasyonlu ipuçları",
-      "Kategori bazlı zorluk",
-      "Marka rengi özelleştirmesi",
-      "İlerleme kaydetme"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/surukle-birak/index.html",
-    platform: "WebGL · Masaüstü & Tablet"
-  },
-  {
-    id: 4,
-    title: "Quiz Arena",
-    category: "Quiz",
-    description: "Dramatik müzik ve sahne atmosferiyle gerçek bir yarışma deneyimi. Fuar ziyaretçileri için tasarlanmış, çoktan seçmeli yüksek enerjili quiz formatı.",
-    features: [
-      "Joker mekanizması",
-      "50/50 seçeneği",
-      "Çoklu oyuncu modu",
-      "Özel branding desteği",
-      "Büyük ekran optimize"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/quiz-arena/index.html",
-    platform: "WebGL · Büyük Ekran"
-  },
-  {
-    id: 5,
-    title: "Hafıza Kartları",
-    category: "Hafıza",
-    description: "Klasik hafıza oyununun markalı versiyonu. Kapalı kartları çevirerek eşleri bulun. Ürün fotoğrafları, logolar veya özel görseller ile tamamen kişiselleştirilebilir.",
-    features: [
-      "4×4 / 6×6 ızgara seçenekleri",
-      "Süre ve serbest mod",
-      "Özel görsel yükleme",
-      "Çok oyunculu rekabet",
-      "İstatistik takibi"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/hafiza-kartlari/index.html",
-    platform: "WebGL · Tüm Cihazlar"
-  },
-  {
-    id: 6,
-    title: "Kelime Bulmaca",
-    category: "Bulmaca",
-    description: "Şirket ürünleri, sloganlar veya kavramlar içeren kişiselleştirilmiş kelime arama bulmacası. Ziyaretçiler kelimeleri bularak marka bilinirliği edinir.",
-    features: [
-      "Özel kelime listesi",
-      "Yatay/dikey/çapraz yön",
-      "Zaman sınırlı mod",
-      "İpucu sistemi",
-      "Sertifika & ödül"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/kelime-bulmaca/index.html",
-    platform: "WebGL · Masaüstü"
-  },
-  {
-    id: 7,
-    title: "Fiyat Bil Kazan",
-    category: "Quiz",
-    description: "Ürünlerin fiyatını tahmin edin, en yakın bilen kazanır! Marka ürünlerini eğlenceli bir yarışma formatına dönüştüren interaktif deneyim.",
-    features: [
-      "Gerçek zamanlı skor",
-      "Açık artırma modu",
-      "Anlık görsel geri bildirim",
-      "Ürün kataloğu entegrasyonu",
-      "Çoklu oyuncu"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/fiyat-bil/index.html",
-    platform: "WebGL · Büyük Ekran"
-  },
-  {
-    id: 8,
-    title: "Puzzle Tamamla",
-    category: "Bulmaca",
-    description: "Ürün görseli veya marka imajından oluşturulan yapboz. Parçalar karışır, ziyaretçi tamamlar. Akılda kalıcı ve markalı bir fuar deneyimi.",
-    features: [
-      "9 / 16 / 25 parça modu",
-      "Süre bazlı yarış",
-      "Özel görsel desteği",
-      "İpucu sistemi",
-      "Tamamlama animasyonu"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/puzzle/index.html",
-    platform: "WebGL · Dokunmatik"
-  },
-  {
-    id: 9,
-    title: "Hız Testi",
-    category: "Sürükle-Bırak",
-    description: "Beliren nesneleri doğru kategorilere süratle sürükleyin. Tepki hızı ve dikkat gerektiren bu oyun, yoğun fuar kalabalığında yüksek etkileşim sağlar.",
-    features: [
-      "Hız bazlı puanlama",
-      "Combo çarpanı sistemi",
-      "3 zorluk seviyesi",
-      "Anlık liderlik tablosu",
-      "Ses efektleri"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/hiz-testi/index.html",
-    platform: "WebGL · Masaüstü & Tablet"
-  },
-  {
-    id: 10,
-    title: "Şans Çarkı",
-    category: "Diğer",
-    description: "Özel ödüller ve mesajlarla dolu interaktif şans çarkı. Fuar standlarında katılımı artırmak için ideal — dönen çarkla heyecan, ödülle marka hatırası.",
-    features: [
-      "Özelleştirilebilir ödül dilimleri",
-      "Animasyonlu dönüş efekti",
-      "QR kod ödül sistemi",
-      "Ekran yayını modu",
-      "Ödül istatistik paneli"
-    ],
-    logo: "",
-    screenshots: ["", "", ""],
-    webglPath: "games/sans-carki/index.html",
-    platform: "WebGL · Tüm Cihazlar"
   }
 ];
 
