@@ -388,6 +388,28 @@
       transition: gap 0.18s;
     }
     .game-card:hover .card-action { gap: 8px; }
+    .card-play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 3px 12px rgba(0,152,212,0.32);
+      letter-spacing: -0.1px;
+    }
+    .card-play-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,152,212,0.45);
+    }
+    .card-play-btn:active { transform: translateY(0); }
 
     /* ─── CATEGORY COLORS ─── */
     .cat-kultur   { background: rgba(254,243,199,0.9); color: #92400e; }
@@ -583,8 +605,8 @@
       flex-shrink: 0;
     }
     .thumb {
-      width: 44px;
-      height: 72px;
+      width: 34px;
+      height: 55px;
       flex-shrink: 0;
       border-radius: 6px;
       overflow: hidden;
@@ -779,8 +801,8 @@
         gap: 8px;
       }
       .thumb {
-        width: 64px;
-        height: 100px;
+        width: 48px;
+        height: 76px;
         cursor: zoom-in;
       }
 
@@ -1099,12 +1121,6 @@ function renderGrid() {
         <div class="card-desc">${g.description}</div>
       </div>
       <div class="card-footer">
-        <div class="card-meta">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-          </svg>
-          ${g.platform}
-        </div>
         <div class="card-action">
           İncele
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -1185,6 +1201,13 @@ function handleOverlayClick(e) {
 }
 
 /* ─── WEBGL ─── */
+function playDirect(id) {
+  currentGame = GAMES.find(g => g.id === id);
+  if (!currentGame) return;
+  document.getElementById('webglFrame').src = currentGame.webglPath;
+  document.getElementById('webglOverlay').classList.add('open');
+}
+
 function launchWebGL() {
   if (!currentGame) return;
   document.getElementById('webglFrame').src = currentGame.webglPath;
