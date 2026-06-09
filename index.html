@@ -1023,7 +1023,6 @@ function handleOverlayClick(e) {
 /* ─── WEBGL ─── */
 function launchWebGL() {
   if (!currentGame) return;
-  document.getElementById('webglName').textContent = currentGame.title;
   document.getElementById('webglFrame').src = currentGame.webglPath;
   document.getElementById('webglOverlay').classList.add('open');
   closeModal();
