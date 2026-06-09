@@ -604,81 +604,48 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(5,8,18,0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       z-index: 300;
-      flex-direction: column;
-    }
-    .webgl-overlay.open { display: flex; }
-    .webgl-topbar {
-      background: transparent;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      z-index: 1;
-    }
-    .webgl-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .webgl-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #22c55e;
-      animation: pulse 2s infinite;
-    }
-    .webgl-name {
-      color: rgba(255,255,255,0.9);
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .webgl-close-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: rgba(255,255,255,0.8);
-      padding: 7px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.83rem;
-      font-weight: 500;
-      font-family: inherit;
-      transition: all 0.18s;
-    }
-    .webgl-close-btn:hover { background: rgba(255,255,255,0.18); color: white; }
-
-    /* 1080×1920 portrait container */
-    .webgl-stage {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 20px 20px;
-      overflow: hidden;
-    }
-    .webgl-portrait {
-      /* maintain 9:16 ratio, fit inside the available space */
-      aspect-ratio: 9 / 16;
-      height: 100%;
-      max-height: 100%;
-      max-width: calc(100vh * 9 / 16);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 32px 80px rgba(0,0,0,0.6);
       background: #000;
-      position: relative;
     }
+    .webgl-overlay.open { display: block; }
+
+    /* iframe tam ekran */
     .webgl-frame {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: none;
       display: block;
+    }
+
+    /* Floating kapat butonu — oyunun üzerinde */
+    .webgl-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.9);
+      padding: 8px 16px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.18s;
+      pointer-events: all;
+    }
+    .webgl-close-btn:hover {
+      background: rgba(0,0,0,0.75);
+      color: white;
+      border-color: rgba(255,255,255,0.35);
     }
 
     /* ─── EMPTY ─── */
@@ -835,23 +802,13 @@
 
 <!-- WEBGL OVERLAY -->
 <div class="webgl-overlay" id="webglOverlay">
-  <div class="webgl-topbar">
-    <div class="webgl-info">
-      <div class="webgl-dot"></div>
-      <span class="webgl-name" id="webglName"></span>
-    </div>
-    <button class="webgl-close-btn" onclick="closeWebGL()">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      Kapat
-    </button>
-  </div>
-  <div class="webgl-stage">
-    <div class="webgl-portrait">
-      <iframe class="webgl-frame" id="webglFrame" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
-    </div>
-  </div>
+  <iframe class="webgl-frame" id="webglFrame" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
+  <button class="webgl-close-btn" onclick="closeWebGL()">
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+      <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    Kapat
+  </button>
 </div>
 
 <footer>
