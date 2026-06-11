@@ -751,32 +751,36 @@
     }
     .partners-track {
       display: flex;
-      gap: 56px;
       width: max-content;
       will-change: transform;
     }
     .partners-track:hover { animation-play-state: paused; }
+    .partners-set {
+      display: flex;
+      gap: 56px;
+      flex-shrink: 0;
+      padding-right: 56px; /* son logo ile klonun ilk logosu arasında gap */
+    }
     .partner-logo {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 60px;
-      min-width: 100px;
       flex-shrink: 0;
-      filter: grayscale(1) opacity(0.55);
-      transition: filter 0.25s;
     }
-    .partner-logo:hover { filter: grayscale(0) opacity(1); }
     .partner-logo img {
       height: 60px;
       max-width: 160px;
       width: auto;
       object-fit: contain;
+      filter: grayscale(1) opacity(0.55);
+      transition: filter 0.25s;
     }
+    .partner-logo img:hover { filter: grayscale(0) opacity(1); }
     @media (max-width: 768px) {
+      .partners-set { gap: 36px; padding-right: 36px; }
       .partner-logo { height: 45px; }
-      .partner-logo img { height: 45px; max-width: 120px; }
-      .partners-track { gap: 36px; }
+      .partner-logo img { height: 45px; max-width: 110px; }
     }
     /* Placeholder metin (logo yokken) */
     .partner-placeholder {
@@ -934,20 +938,15 @@
   <p class="partners-heading">İş Ortakları</p>
   <div class="partners-track-wrapper">
     <div class="partners-track" id="partnersTrack">
-      <!-- Set 1 -->
-      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
-      <!-- Set 2 — sonsuz döngü için kopya -->
-      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
+      <!-- Set 1 — JS set 2'yi otomatik klonlar -->
+      <div class="partners-set" id="partnersSet">
+        <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
+        <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
+        <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
+        <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
+        <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+        <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1500,22 +1499,27 @@ renderGrid();
 /* ─── PARTNER SCROLL ─── */
 function initPartners() {
   const track = document.getElementById('partnersTrack');
-  if (!track) return;
+  const set   = document.getElementById('partnersSet');
+  if (!track || !set) return;
+
+  /* Set 2'yi klonla */
+  const clone = set.cloneNode(true);
+  clone.removeAttribute('id');
+  track.appendChild(clone);
 
   const imgs = track.querySelectorAll('img');
   let loaded = 0;
 
   const start = () => {
-    /* Set 1 genişliği = toplam / 2 (iki kopya var) */
-    const setWidth = track.scrollWidth / 2;
+    /* Set 1'in tam genişliği — padding-right dahil, gap dahil */
+    const setWidth = set.offsetWidth;
     const duration = Math.max(10, setWidth / 80);
 
-    /* Dinamik @keyframes inject — CSS değişkeni yerine gerçek piksel */
-    const styleId = 'marquee-style';
-    const old = document.getElementById(styleId);
+    /* Dinamik @keyframes — gerçek piksel değeri */
+    const old = document.getElementById('marquee-style');
     if (old) old.remove();
     const s = document.createElement('style');
-    s.id = styleId;
+    s.id = 'marquee-style';
     s.textContent = `@keyframes marquee-scroll {
       from { transform: translateX(0); }
       to   { transform: translateX(-${setWidth}px); }
