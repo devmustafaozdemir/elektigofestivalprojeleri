@@ -1405,7 +1405,8 @@ document.addEventListener('keydown', e => {
 });
 
 /* ─── INIT ─── */
-document.getElementById('navCount').textContent = GAMES.length;
+const navCountEl = document.getElementById('navCount');
+if (navCountEl) navCountEl.textContent = GAMES.length;
 document.getElementById('totalGames').innerHTML = `${GAMES.length}<span>+</span>`;
 renderPills();
 renderGrid();
