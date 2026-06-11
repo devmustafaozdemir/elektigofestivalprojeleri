@@ -726,6 +726,68 @@
       font-size: 0.8rem;
     }
 
+    /* ─── İŞ ORTAKLARI ─── */
+    .partners-section {
+      padding: 48px 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .partners-heading {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 28px;
+    }
+    .partners-track-wrapper {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    }
+    .partners-track {
+      display: flex;
+      gap: 48px;
+      width: max-content;
+      animation: scroll-left 22s linear infinite;
+    }
+    .partners-track:hover { animation-play-state: paused; }
+    @keyframes scroll-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .partner-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      min-width: 120px;
+      flex-shrink: 0;
+      filter: grayscale(1) opacity(0.55);
+      transition: filter 0.25s;
+    }
+    .partner-logo:hover { filter: grayscale(0) opacity(1); }
+    .partner-logo img {
+      max-height: 52px;
+      max-width: 140px;
+      width: auto;
+      object-fit: contain;
+    }
+    /* Placeholder metin (logo yokken) */
+    .partner-placeholder {
+      padding: 10px 24px;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
     /* ─── MARKALAR ─── */
     .brands-block { margin-top: 4px; }
     .brands-list {
@@ -962,6 +1024,23 @@
   </button>
 </div>
 
+<!-- İŞ ORTAKLARI -->
+<section class="partners-section">
+  <p class="partners-heading">İş Ortakları</p>
+  <div class="partners-track-wrapper">
+    <div class="partners-track" id="partnersTrack">
+      <!-- Logolar buraya gelecek — şimdilik placeholder -->
+      <div class="partner-logo"><span class="partner-placeholder">Ülker</span></div>
+      <div class="partner-logo"><span class="partner-placeholder">Sıfır Atık Vakfı</span></div>
+      <div class="partner-logo"><span class="partner-placeholder">ElektiGO</span></div>
+      <!-- Sonsuz döngü için kopyası -->
+      <div class="partner-logo"><span class="partner-placeholder">Ülker</span></div>
+      <div class="partner-logo"><span class="partner-placeholder">Sıfır Atık Vakfı</span></div>
+      <div class="partner-logo"><span class="partner-placeholder">ElektiGO</span></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   © 2025 Oyun Kataloğu — Tüm hakları saklıdır.
 </footer>
@@ -1117,7 +1196,7 @@ const GAMES = [
         title: "Temiz mi? Kirli mi?",
         category: "Sürükle & Bırak",
         mechanic: "Sürükle & Bırak",
-        description: "Dünyamızın geleceği senin ellerinde! Karar Senin, çevre bilincini ve sürdürülebilir yaşamı test eden, zamana karşı yarıştığın eğlenceli bir bilgi ve tercih oyunudur. Doğru kararları ver, doğayı koru ve en yüksek skora ulaş!",
+        description: "Çevre bilincini ve hızını kanıtlamaya hazır mısın? Temiz mi Kirli mi? ile yeşil bir dünya için kartları aç, temiz ve kirli enerji kaynaklarını hafızanda tutarak doğru kutulara süratle yerleştir. 60 saniyelik bu tatlı yarışta hem dikkatini konuştur hem de en yüksek skora ulaş!",
         features: [
             "Kurumsal kimliğe uygun özelleştirme",
             "Kiosk, dokunmatik ekran ve tablet uyumlu",
@@ -1133,6 +1212,29 @@ const GAMES = [
             "assets/screens/temizmikirlimi-5.png"
         ],
         webglPath: "games/temizmikirlimi/index.html",
+        platform: "WebGL · Kiosk & Dokunmatik"
+    },
+    {
+        id: 7,
+        title: "Boşluğu Doldur",
+        category: "Çoktan Seçmeli",
+        mechanic: "Çoktan Seçmeli",
+        description: "Kelimelerin gücünü göstermeye hazır mısın? Boşluğu Doldur, dikkatini ve bilgini test eden, zamana karşı yarıştığın heyecan dolu bir kelime oyunudur. Karşına çıkan cümledeki boşluğa en uygun kelimeyi bulmak için 4 farklı seçeneği hızla incele, doğru cevabı işaretle ve rekor puanlara ulaş. Bakalım süren bitmeden kaç doğru cevap verebileceksin?",
+        features: [
+            "Kurumsal kimliğe uygun özelleştirme",
+            "Kiosk, dokunmatik ekran ve tablet uyumlu",
+            "Çevrimdışı veya çevrimiçi çalışabilir"
+        ],
+        brands: ["Enerji Bakanlığı"],
+        logo: "assets/logos/boslugu-doldur.png",
+        screenshots: [
+            "assets/screens/boslugu-doldur-1.png",
+            "assets/screens/boslugu-doldur-2.png",
+            "assets/screens/boslugu-doldur-3.png",
+            "assets/screens/boslugu-doldur-4.png",
+            "assets/screens/boslugu-doldur-5.png"
+        ],
+        webglPath: "games/boslugu-doldur/index.html",
         platform: "WebGL · Kiosk & Dokunmatik"
     }
 ];
