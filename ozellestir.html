@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Özelleştir — ElektiGO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0098D4;
+      --primary-dark: #0077A8;
+      --bg: #f4f8fb;
+      --surface: #ffffff;
+      --surface-2: #eef5fa;
+      --border: #d4e6f0;
+      --text: #0f172a;
+      --text-muted: #4a6070;
+      --radius: 18px;
+      --radius-sm: 10px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 28px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .brand-logo { height: 28px; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .back-btn {
+      display: flex; align-items: center; gap: 6px;
+      text-decoration: none; color: var(--text-muted);
+      font-size: 0.85rem; font-weight: 600;
+      padding: 7px 14px; border-radius: 100px;
+      border: 1px solid var(--border); transition: all 0.18s;
+    }
+    .back-btn:hover { background: var(--surface-2); color: var(--text); }
+    .btn-editor-toggle {
+      display: flex; align-items: center; gap: 7px;
+      background: #f59e0b; color: white; border: none;
+      padding: 8px 16px; border-radius: 100px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      transition: background 0.18s;
+    }
+    .btn-editor-toggle:hover { background: #d97706; }
+    .btn-editor-toggle.active { background: #dc2626; }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 48px 28px 80px; }
+    .page-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .page-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 48px; }
+
+    .steps { display: flex; flex-direction: column; gap: 40px; }
+    .step-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+    .step-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--primary);
+      background: rgba(0,152,212,0.08); padding: 5px 12px;
+      border-radius: 100px; margin-bottom: 14px;
+    }
+    .step-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+
+    /* LOGO UPLOAD */
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm);
+      padding: 48px 24px; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: var(--surface-2);
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--primary); background: rgba(0,152,212,0.05); }
+    .upload-zone input { display: none; }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .upload-text { font-weight: 600; margin-bottom: 4px; }
+    .upload-sub { font-size: 0.82rem; color: var(--text-muted); }
+    .logo-preview-wrap {
+      display: none; align-items: center; gap: 20px;
+      padding: 16px 20px; background: var(--surface-2);
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    }
+    .logo-preview-wrap.visible { display: flex; }
+    .logo-preview-wrap img { max-height: 56px; max-width: 160px; object-fit: contain; }
+    .logo-name { font-size: 0.88rem; font-weight: 600; flex: 1; }
+    .logo-remove { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.1rem; transition: color 0.15s; }
+    .logo-remove:hover { color: #ef4444; }
+
+    /* GAME SELECT */
+    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .game-option {
+      border: 2px solid var(--border); border-radius: var(--radius-sm);
+      padding: 16px; cursor: pointer; transition: all 0.18s;
+      display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+    }
+    .game-option:hover { border-color: var(--primary); background: rgba(0,152,212,0.04); }
+    .game-option.selected { border-color: var(--primary); background: rgba(0,152,212,0.08); box-shadow: 0 0 0 3px rgba(0,152,212,0.15); }
+    .game-option img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; background: var(--surface-2); }
+    .game-option-title { font-size: 0.88rem; font-weight: 700; }
+    .game-option-mec { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* PREVIEW */
+    .preview-section { display: none; }
+    .preview-section.visible { display: block; }
+    .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
+    .preview-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    .preview-card-label { padding: 10px 14px; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .preview-card canvas { width: 100%; display: block; }
+    .download-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-download-all {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--primary); color: white; border: none;
+      border-radius: 100px; padding: 13px 28px;
+      font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+    }
+    .btn-download-all:hover { background: var(--primary-dark); }
+
+    /* ═══════════════════════════════════════
+       ALAN EDİTÖRÜ
+    ═══════════════════════════════════════ */
+    .editor-panel {
+      display: none;
+      background: #fffbeb;
+      border: 2px solid #f59e0b;
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .editor-panel.visible { display: block; }
+    .editor-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #92400e;
+      background: rgba(245,158,11,0.15); padding: 5px 12px;
+      border-radius: 100px; margin-bottom: 14px;
+    }
+    .editor-info {
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
+      border-radius: var(--radius-sm); padding: 14px 18px;
+      font-size: 0.85rem; color: #78350f; margin-bottom: 24px; line-height: 1.6;
+    }
+    .editor-game-select { margin-bottom: 24px; }
+    .editor-game-select label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 8px; }
+    .editor-game-select select {
+      padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: inherit;
+      font-size: 0.9rem; background: white; color: var(--text);
+      cursor: pointer; outline: none;
+    }
+    .editor-screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .editor-screen-card {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); overflow: hidden;
+    }
+    .editor-screen-label {
+      padding: 10px 14px; font-size: 0.78rem; font-weight: 600;
+      color: var(--text-muted); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .area-count {
+      background: var(--primary); color: white;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 100px;
+    }
+    .editor-canvas-wrap {
+      position: relative; cursor: crosshair;
+      user-select: none; -webkit-user-select: none;
+    }
+    .editor-canvas-wrap canvas { width: 100%; display: block; }
+    .editor-screen-actions {
+      padding: 10px 14px; border-top: 1px solid var(--border);
+      display: flex; gap: 8px;
+    }
+    .btn-clear-areas {
+      font-size: 0.75rem; font-weight: 600; color: #dc2626;
+      background: none; border: 1px solid #fecaca;
+      border-radius: 100px; padding: 4px 12px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-clear-areas:hover { background: #fef2f2; }
+    .editor-export {
+      margin-top: 28px; padding: 24px;
+      background: #f0fdf4; border: 1.5px solid #86efac;
+      border-radius: var(--radius-sm);
+    }
+    .editor-export h4 { font-size: 0.95rem; font-weight: 700; color: #166534; margin-bottom: 12px; }
+    .editor-export pre {
+      background: #1e1e1e; color: #d4d4d4;
+      padding: 16px; border-radius: var(--radius-sm);
+      font-size: 0.78rem; line-height: 1.5; overflow-x: auto;
+      max-height: 300px; white-space: pre-wrap; word-break: break-all;
+    }
+    .btn-copy-json {
+      margin-top: 12px;
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #16a34a; color: white; border: none;
+      border-radius: 100px; padding: 10px 22px;
+      font-size: 0.85rem; font-weight: 700; cursor: pointer;
+      transition: background 0.18s;
+    }
+    .btn-copy-json:hover { background: #15803d; }
+    .btn-copy-json.copied { background: #0098D4; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <img class="brand-logo" src="assets/elektigo-logo.png" alt="ElektiGO">
+    <div class="nav-actions">
+      <button class="btn-editor-toggle" id="editorToggleBtn" onclick="toggleEditor()">
+        ✏️ Alan Tanımla
+      </button>
+      <a href="index.html" class="back-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Siteye Dön
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <h1 class="page-title">Özelleştir</h1>
+  <p class="page-sub">Logonuzu yükleyin, oyunu seçin — görsel önizlemeyi anında görün ve indirin.</p>
+
+  <div class="steps">
+
+    <!-- ALAN EDİTÖRÜ -->
+    <div class="editor-panel" id="editorPanel">
+      <div class="editor-badge">✏️ Alan Tanımlama Modu</div>
+      <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;">Logo Alanlarını Tanımla</h3>
+      <div class="editor-info">
+        Her ekranın üzerine fareyle <strong>sürükleyerek</strong> dikdörtgen çiz — logo o alana yerleşecek.<br>
+        İstersen aynı ekrana birden fazla alan çizebilirsin.<br>
+        Bitirince <strong>"JSON'u Kopyala"</strong> butonuna bas, çıkan metni bana gönder.
+      </div>
+
+      <div class="editor-game-select">
+        <label>Oyun seç:</label>
+        <select id="editorGameSelect" onchange="loadEditorScreens()">
+          <option value="">-- Oyun seç --</option>
+        </select>
+      </div>
+
+      <div class="editor-screens" id="editorScreens"></div>
+
+      <div class="editor-export" id="editorExport" style="display:none">
+        <h4>📋 Koordinatları Kopyala</h4>
+        <pre id="jsonOutput"></pre>
+        <button class="btn-copy-json" id="copyBtn" onclick="copyJSON()">
+          📋 JSON'u Kopyala
+        </button>
+      </div>
+    </div>
+
+    <!-- ADIM 1: LOGO -->
+    <div class="step-block">
+      <div class="step-label">Adım 1</div>
+      <div class="step-title">Logo Yükle</div>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('logoInput').click()">
+        <input type="file" id="logoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+        <div class="upload-icon">🖼️</div>
+        <div class="upload-text">Logo dosyasını seç veya buraya sürükle</div>
+        <div class="upload-sub">PNG, JPG, SVG · Şeffaf arka plan önerilir</div>
+      </div>
+      <div class="logo-preview-wrap" id="logoPreviewWrap">
+        <img id="logoPreviewImg" src="" alt="Logo">
+        <span class="logo-name" id="logoFileName"></span>
+        <button class="logo-remove" onclick="removeLogo()">✕</button>
+      </div>
+    </div>
+
+    <!-- ADIM 2: OYUN SEÇ -->
+    <div class="step-block">
+      <div class="step-label">Adım 2</div>
+      <div class="step-title">Oyun Seç</div>
+      <div class="game-grid" id="gameGrid"></div>
+    </div>
+
+    <!-- ADIM 3: ÖNİZLEME -->
+    <div class="step-block preview-section" id="previewSection">
+      <div class="step-label">Adım 3</div>
+      <div class="step-title">Önizleme & İndir</div>
+      <div class="preview-grid" id="previewGrid"></div>
+      <div class="download-row" id="downloadRow"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   OYUN VERİSİ
+============================================================ */
+const GAMES = [
+  {
+    id: 0,
+    title: "Motifi Tamamla",
+    mechanic: "Çoktan Seçmeli",
+    logo: "assets/logos/motifi-tamamla.png",
+    screens: [
+      { src: "assets/screens/motifi-tamamla-1.png", label: "Ekran 1", areas: [{ x: 340, y: 26, w: 414, h: 118 }] },
+      { src: "assets/screens/motifi-tamamla-2.png", label: "Ekran 2", areas: [] },
+      { src: "assets/screens/motifi-tamamla-3.png", label: "Ekran 3", areas: [] },
+      { src: "assets/screens/motifi-tamamla-4.png", label: "Ekran 4", areas: [] },
+      { src: "assets/screens/motifi-tamamla-5.png", label: "Ekran 5", areas: [] }
+    ]
+  },
+  {
+    id: 1,
+    title: "Atık Yağmuru",
+    mechanic: "Sürükle & Bırak",
+    logo: "assets/logos/atik-yagmuru.png",
+    screens: [
+      { src: "assets/screens/atik-yagmuru-1.png", label: "Ekran 1", areas: [{ x: 256, y: 33,   w: 569, h: 212 }] },
+      { src: "assets/screens/atik-yagmuru-2.png", label: "Ekran 2", areas: [{ x: 417, y: 16,   w: 333, h: 104 }] },
+      { src: "assets/screens/atik-yagmuru-3.png", label: "Ekran 3", areas: [] },
+      { src: "assets/screens/atik-yagmuru-4.png", label: "Ekran 4", areas: [] },
+      { src: "assets/screens/atik-yagmuru-5.png", label: "Ekran 5", areas: [{ x: 387, y: 1731, w: 316, h: 161 }] }
+    ]
+  },
+  {
+    id: 2,
+    title: "Bayrağı Bul",
+    mechanic: "Sürükle & Bırak",
+    logo: "assets/logos/bayragi-bul.png",
+    screens: [
+      { src: "assets/screens/bayragi-bul-1.png", label: "Ekran 1", areas: [{ x: 252, y: 70,  w: 548, h: 192 }] },
+      { src: "assets/screens/bayragi-bul-2.png", label: "Ekran 2", areas: [] },
+      { src: "assets/screens/bayragi-bul-3.png", label: "Ekran 3", areas: [] },
+      { src: "assets/screens/bayragi-bul-4.png", label: "Ekran 4", areas: [{ x: 394, y: 101, w: 289, h: 98  }] }
+    ]
+  },
+  {
+    id: 3,
+    title: "Lezzet Hafızası",
+    mechanic: "Eşleştirme",
+    logo: "assets/logos/lezzet-hafizasi.png",
+    screens: [
+      { src: "assets/screens/lezzet-hafizasi-1.png", label: "Ekran 1", areas: [{ x: 252, y: 70,  w: 548, h: 192 }] },
+      { src: "assets/screens/lezzet-hafizasi-2.png", label: "Ekran 2", areas: [] },
+      { src: "assets/screens/lezzet-hafizasi-3.png", label: "Ekran 3", areas: [] },
+      { src: "assets/screens/lezzet-hafizasi-4.png", label: "Ekran 4", areas: [{ x: 394, y: 101, w: 289, h: 98  }] },
+      { src: "assets/screens/lezzet-hafizasi-5.png", label: "Ekran 5", areas: [] }
+    ]
+  },
+  {
+    id: 4,
+    title: "Doğru Karar",
+    mechanic: "Çoktan Seçmeli",
+    logo: "assets/logos/dogru-karar.png",
+    screens: [
+      { src: "assets/screens/dogru-karar-1.png", label: "Ekran 1", areas: [{ x: 343, y: 63, w: 387, h: 101 }] },
+      { src: "assets/screens/dogru-karar-2.png", label: "Ekran 2", areas: [{ x: 367, y: 50, w: 373, h: 118 }] },
+      { src: "assets/screens/dogru-karar-3.png", label: "Ekran 3", areas: [{ x: 454, y: 91, w: 357, h: 131 }] },
+      { src: "assets/screens/dogru-karar-4.png", label: "Ekran 4", areas: [] },
+      { src: "assets/screens/dogru-karar-5.png", label: "Ekran 5", areas: [{ x: 286, y: 25, w: 495, h: 155 }] }
+    ]
+  },
+  {
+    id: 5,
+    title: "Karar Senin",
+    mechanic: "Çoktan Seçmeli",
+    logo: "assets/logos/karar-senin.png",
+    screens: [
+      { src: "assets/screens/karar-senin-1.png", label: "Ekran 1", areas: [{ x: 343, y: 63, w: 387, h: 101 }] },
+      { src: "assets/screens/karar-senin-2.png", label: "Ekran 2", areas: [{ x: 367, y: 50, w: 373, h: 118 }] },
+      { src: "assets/screens/karar-senin-3.png", label: "Ekran 3", areas: [{ x: 454, y: 91, w: 357, h: 131 }] },
+      { src: "assets/screens/karar-senin-4.png", label: "Ekran 4", areas: [] },
+      { src: "assets/screens/karar-senin-5.png", label: "Ekran 5", areas: [{ x: 286, y: 25, w: 495, h: 155 }] }
+    ]
+  },
+  {
+    id: 6,
+    title: "Temiz mi? Kirli mi?",
+    mechanic: "Sürükle & Bırak",
+    logo: "assets/logos/temizmikirlimi.png",
+    screens: [
+      { src: "assets/screens/temizmikirlimi-1.png", label: "Ekran 1", areas: [{ x: 343, y: 63, w: 387, h: 101 }] },
+      { src: "assets/screens/temizmikirlimi-2.png", label: "Ekran 2", areas: [{ x: 367, y: 50, w: 373, h: 118 }] },
+      { src: "assets/screens/temizmikirlimi-3.png", label: "Ekran 3", areas: [{ x: 454, y: 91, w: 357, h: 131 }] },
+      { src: "assets/screens/temizmikirlimi-4.png", label: "Ekran 4", areas: [] }
+    ]
+  },
+  {
+    id: 7,
+    title: "Boşluğu Doldur",
+    mechanic: "Çoktan Seçmeli",
+    logo: "assets/logos/boslugu-doldur.png",
+    screens: [
+      { src: "assets/screens/boslugu-doldur-1.png", label: "Ekran 1", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/boslugu-doldur-2.png", label: "Ekran 2", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/boslugu-doldur-3.png", label: "Ekran 3", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/boslugu-doldur-4.png", label: "Ekran 4", areas: [{ x: 60, y: 60, w: 340, h: 120 }] }
+    ]
+  },
+  {
+    id: 8,
+    title: "Şehrin Simgeleri Hafızası",
+    mechanic: "Çoktan Seçmeli",
+    logo: "assets/logos/sehrin-simgeleri.png",
+    screens: [
+      { src: "assets/screens/sehrin-simgeleri-1.png", label: "Ekran 1", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/sehrin-simgeleri-2.png", label: "Ekran 2", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/sehrin-simgeleri-3.png", label: "Ekran 3", areas: [{ x: 60, y: 60, w: 340, h: 120 }] },
+      { src: "assets/screens/sehrin-simgeleri-4.png", label: "Ekran 4", areas: [{ x: 60, y: 60, w: 340, h: 120 }] }
+    ]
+  }
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+let uploadedLogo = null;
+let selectedGame = null;
+
+// Editor state: { gameId: { screenIdx: [ {x,y,w,h}, ... ] } }
+const editorAreas = {};
+let isEditorOpen = false;
+
+/* ============================================================
+   EDİTÖR
+============================================================ */
+function toggleEditor() {
+  isEditorOpen = !isEditorOpen;
+  const panel = document.getElementById('editorPanel');
+  const btn   = document.getElementById('editorToggleBtn');
+  panel.classList.toggle('visible', isEditorOpen);
+  btn.classList.toggle('active', isEditorOpen);
+  btn.textContent = isEditorOpen ? '✕ Editörü Kapat' : '✏️ Alan Tanımla';
+  if (isEditorOpen) {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    populateEditorSelect();
+  }
+}
+
+function populateEditorSelect() {
+  const sel = document.getElementById('editorGameSelect');
+  sel.innerHTML = '<option value="">-- Oyun seç --</option>' +
+    GAMES.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+}
+
+function loadEditorScreens() {
+  const gameId = parseInt(document.getElementById('editorGameSelect').value);
+  const container = document.getElementById('editorScreens');
+  container.innerHTML = '';
+  document.getElementById('editorExport').style.display = 'none';
+
+  if (isNaN(gameId)) return;
+  const game = GAMES.find(g => g.id === gameId);
+  if (!game) return;
+
+  if (!editorAreas[gameId]) editorAreas[gameId] = {};
+
+  game.screens.forEach((screen, si) => {
+    if (!editorAreas[gameId][si]) editorAreas[gameId][si] = [...screen.areas];
+
+    const card = document.createElement('div');
+    card.className = 'editor-screen-card';
+
+    const label = document.createElement('div');
+    label.className = 'editor-screen-label';
+    label.innerHTML = `<span>${screen.label}</span><span class="area-count" id="ac-${gameId}-${si}">${editorAreas[gameId][si].length} alan</span>`;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'editor-canvas-wrap';
+
+    const canvas = document.createElement('canvas');
+    wrap.appendChild(canvas);
+
+    const actions = document.createElement('div');
+    actions.className = 'editor-screen-actions';
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'btn-clear-areas';
+    clearBtn.textContent = 'Alanları Temizle';
+    clearBtn.onclick = () => clearAreas(gameId, si, canvas);
+    actions.appendChild(clearBtn);
+
+    card.appendChild(label);
+    card.appendChild(wrap);
+    card.appendChild(actions);
+    container.appendChild(card);
+
+    initEditorCanvas(canvas, screen, gameId, si);
+  });
+}
+
+function initEditorCanvas(canvas, screen, gameId, si) {
+  const img = new Image();
+  img.onload = () => {
+    canvas.width  = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    redrawEditor(canvas, img, gameId, si);
+    setupDrawing(canvas, img, gameId, si);
+  };
+  img.onerror = () => {
+    canvas.width = 540; canvas.height = 960;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#eef5fa';
+    ctx.fillRect(0, 0, 540, 960);
+    ctx.fillStyle = '#7a9baf'; ctx.font = '28px Inter'; ctx.textAlign = 'center';
+    ctx.fillText(screen.label, 270, 480);
+    redrawEditor(canvas, null, gameId, si);
+    setupDrawing(canvas, null, gameId, si);
+  };
+  img.src = screen.src;
+  canvas._img = img; // cache
+}
+
+function redrawEditor(canvas, img, gameId, si) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (img && img.complete && img.naturalWidth) ctx.drawImage(img, 0, 0);
+  else { ctx.fillStyle = '#eef5fa'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+  const areas = editorAreas[gameId]?.[si] || [];
+  areas.forEach((a, i) => {
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth   = Math.max(3, canvas.width / 200);
+    ctx.strokeRect(a.x, a.y, a.w, a.h);
+    ctx.fillStyle   = 'rgba(245,158,11,0.15)';
+    ctx.fillRect(a.x, a.y, a.w, a.h);
+    // Alan numarası
+    ctx.fillStyle = '#f59e0b';
+    ctx.font = `bold ${Math.max(20, canvas.width / 30)}px Inter`;
+    ctx.textAlign = 'left';
+    ctx.fillText(`Alan ${i + 1}`, a.x + 6, a.y + Math.max(24, canvas.width / 25));
+  });
+
+  // Alan sayısını güncelle
+  const badge = document.getElementById(`ac-${gameId}-${si}`);
+  if (badge) badge.textContent = `${areas.length} alan`;
+
+  updateExport();
+}
+
+function setupDrawing(canvas, img, gameId, si) {
+  let startX, startY, drawing = false;
+
+  const getPos = e => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width  / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top)  * scaleY
+    };
+  };
+
+  const onDown = e => {
+    e.preventDefault();
+    const p = getPos(e);
+    startX = p.x; startY = p.y; drawing = true;
+  };
+
+  const onMove = e => {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = getPos(e);
+    redrawEditor(canvas, canvas._img, gameId, si);
+    // Preview rect
+    const ctx = canvas.getContext('2d');
+    const rx = Math.min(startX, p.x), ry = Math.min(startY, p.y);
+    const rw = Math.abs(p.x - startX),  rh = Math.abs(p.y - startY);
+    ctx.strokeStyle = '#dc2626';
+    ctx.lineWidth   = Math.max(2, canvas.width / 250);
+    ctx.setLineDash([8, 4]);
+    ctx.strokeRect(rx, ry, rw, rh);
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(220,38,38,0.1)';
+    ctx.fillRect(rx, ry, rw, rh);
+  };
+
+  const onUp = e => {
+    if (!drawing) return;
+    drawing = false;
+    const p = getPos(e.changedTouches ? { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY } : e);
+    const w = Math.abs(p.x - startX);
+    const h = Math.abs(p.y - startY);
+    if (w > 10 && h > 10) {
+      editorAreas[gameId][si].push({
+        x: Math.round(Math.min(startX, p.x)),
+        y: Math.round(Math.min(startY, p.y)),
+        w: Math.round(w),
+        h: Math.round(h)
+      });
+    }
+    redrawEditor(canvas, canvas._img, gameId, si);
+  };
+
+  canvas.addEventListener('mousedown',  onDown);
+  canvas.addEventListener('mousemove',  onMove);
+  canvas.addEventListener('mouseup',    onUp);
+  canvas.addEventListener('touchstart', onDown, { passive: false });
+  canvas.addEventListener('touchmove',  onMove, { passive: false });
+  canvas.addEventListener('touchend',   onUp);
+}
+
+function clearAreas(gameId, si, canvas) {
+  editorAreas[gameId][si] = [];
+  redrawEditor(canvas, canvas._img, gameId, si);
+}
+
+function updateExport() {
+  const gameId = parseInt(document.getElementById('editorGameSelect').value);
+  if (isNaN(gameId)) return;
+  const game = GAMES.find(g => g.id === gameId);
+  if (!game) return;
+
+  const output = game.screens.map((s, si) => ({
+    label: s.label,
+    areas: (editorAreas[gameId]?.[si] || [])
+  }));
+
+  document.getElementById('jsonOutput').textContent = JSON.stringify(output, null, 2);
+  document.getElementById('editorExport').style.display = '';
+}
+
+function copyJSON() {
+  const text = document.getElementById('jsonOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Kopyalandı!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 JSON\'u Kopyala'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+/* ============================================================
+   LOGO UPLOAD
+============================================================ */
+const logoInput  = document.getElementById('logoInput');
+const uploadZone = document.getElementById('uploadZone');
+
+logoInput.addEventListener('change', e => { if (e.target.files[0]) loadLogo(e.target.files[0]); });
+uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) loadLogo(e.dataTransfer.files[0]);
+});
+
+function loadLogo(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      uploadedLogo = img;
+      document.getElementById('logoPreviewImg').src = ev.target.result;
+      document.getElementById('logoFileName').textContent = file.name;
+      uploadZone.style.display = 'none';
+      document.getElementById('logoPreviewWrap').classList.add('visible');
+      tryRender();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeLogo() {
+  uploadedLogo = null; logoInput.value = '';
+  uploadZone.style.display = '';
+  document.getElementById('logoPreviewWrap').classList.remove('visible');
+  document.getElementById('previewSection').classList.remove('visible');
+}
+
+/* ============================================================
+   GAME SELECT
+============================================================ */
+function renderGameGrid() {
+  document.getElementById('gameGrid').innerHTML = GAMES.map(g => `
+    <div class="game-option" id="go-${g.id}" onclick="selectGame(${g.id})">
+      <img src="${g.logo}" alt="${g.title}" onerror="this.style.background='#eef5fa'">
+      <div class="game-option-title">${g.title}</div>
+      <div class="game-option-mec">${g.mechanic}</div>
+    </div>`).join('');
+}
+
+function selectGame(id) {
+  selectedGame = GAMES.find(g => g.id === id);
+  document.querySelectorAll('.game-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById(`go-${id}`).classList.add('selected');
+  tryRender();
+}
+
+/* ============================================================
+   RENDER / PREVIEW
+============================================================ */
+function tryRender() {
+  if (!uploadedLogo || !selectedGame) return;
+  renderPreviews();
+}
+
+function renderPreviews() {
+  const section = document.getElementById('previewSection');
+  const grid    = document.getElementById('previewGrid');
+  const dlRow   = document.getElementById('downloadRow');
+  grid.innerHTML = ''; dlRow.innerHTML = '';
+  section.classList.add('visible');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const canvases = [];
+  selectedGame.screens.forEach((screen, i) => {
+    const card = document.createElement('div');
+    card.className = 'preview-card';
+    card.innerHTML = `<div class="preview-card-label">${screen.label}</div>`;
+    const canvas = document.createElement('canvas');
+    card.appendChild(canvas);
+    grid.appendChild(card);
+    canvases.push({ canvas, screen, idx: i });
+    drawScreen(canvas, screen);
+  });
+
+  const btnAll = document.createElement('button');
+  btnAll.className = 'btn-download-all';
+  btnAll.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13M6 11l6 6 6-6"/><path d="M3 21h18"/></svg> Tümünü İndir`;
+  btnAll.onclick = () => canvases.forEach(({ canvas, idx }) => downloadCanvas(canvas, `${selectedGame.title}-ekran${idx + 1}.png`));
+  dlRow.appendChild(btnAll);
+}
+
+function drawScreen(canvas, screen) {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    screen.areas.forEach(a => drawLogoInArea(ctx, uploadedLogo, a.x, a.y, a.w, a.h));
+  };
+  img.onerror = () => {
+    canvas.width = 540; canvas.height = 960;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ddeef7'; ctx.fillRect(0, 0, 540, 960);
+    ctx.fillStyle = '#7a9baf'; ctx.font = '24px Inter'; ctx.textAlign = 'center';
+    ctx.fillText(screen.label, 270, 480);
+    screen.areas.forEach(a => {
+      const s = 540 / 1080;
+      drawLogoInArea(ctx, uploadedLogo, a.x * s, a.y * s, a.w * s, a.h * s);
+    });
+  };
+  img.src = screen.src;
+}
+
+function drawLogoInArea(ctx, logo, x, y, w, h) {
+  const ratio = Math.min(w / logo.naturalWidth, h / logo.naturalHeight);
+  const dw = logo.naturalWidth * ratio, dh = logo.naturalHeight * ratio;
+  ctx.drawImage(logo, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+}
+
+function downloadCanvas(canvas, filename) {
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = filename; a.click();
+}
+
+/* INIT */
+renderGameGrid();
+</script>
+</body>
+</html>
