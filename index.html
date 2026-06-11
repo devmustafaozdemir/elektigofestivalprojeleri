@@ -752,11 +752,11 @@
       display: flex;
       gap: 48px;
       width: max-content;
-      animation: scroll-right 22s linear infinite;
+      will-change: transform;
     }
     .partners-track:hover { animation-play-state: paused; }
     @keyframes scroll-right {
-      from { transform: translateX(-50%); }
+      from { transform: translateX(var(--scroll-from)); }
       to   { transform: translateX(0); }
     }
     .partner-logo {
@@ -1034,14 +1034,14 @@
       <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
       <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
       <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikkaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
       <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
       <!-- Set 2 — sonsuz döngü için kopya -->
       <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
       <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
       <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
       <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikkaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
       <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
     </div>
   </div>
@@ -1468,6 +1468,29 @@ document.getElementById('navCount').textContent = GAMES.length;
 document.getElementById('totalGames').innerHTML = `${GAMES.length}<span>+</span>`;
 renderPills();
 renderGrid();
+
+/* ─── PARTNER SCROLL ─── */
+function initPartners() {
+  const track = document.getElementById('partnersTrack');
+  if (!track) return;
+
+  /* Tüm görseller yüklenince genişliği ölç */
+  const imgs = track.querySelectorAll('img');
+  let loaded = 0;
+  const start = () => {
+    /* Toplam genişliğin tam yarısı kadar kaydır (Set 1 = Set 2) */
+    const half = track.scrollWidth / 2;
+    track.style.setProperty('--scroll-from', `-${half}px`);
+    track.style.animation = `scroll-right 24s linear infinite`;
+  };
+  if (!imgs.length) { start(); return; }
+  imgs.forEach(img => {
+    if (img.complete) { loaded++; if (loaded === imgs.length) start(); }
+    else { img.addEventListener('load',  () => { loaded++; if (loaded === imgs.length) start(); });
+           img.addEventListener('error', () => { loaded++; if (loaded === imgs.length) start(); }); }
+  });
+}
+initPartners();
 </script>
 </body>
 </html>
