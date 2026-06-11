@@ -755,24 +755,24 @@
       will-change: transform;
     }
     .partners-track:hover { animation-play-state: paused; }
-    @keyframes scroll-right {
-      from { transform: translateX(var(--scroll-from)); }
-      to   { transform: translateX(0); }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(var(--marquee-to)); }
     }
     .partner-logo {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 52px;
-      min-width: 120px;
+      height: 72px;
+      min-width: 140px;
       flex-shrink: 0;
       filter: grayscale(1) opacity(0.55);
       transition: filter 0.25s;
     }
     .partner-logo:hover { filter: grayscale(0) opacity(1); }
     .partner-logo img {
-      max-height: 52px;
-      max-width: 140px;
+      max-height: 72px;
+      max-width: 180px;
       width: auto;
       object-fit: contain;
     }
@@ -916,9 +916,32 @@
         <div class="stat-label">Kategori</div>
       </div>
       <div class="stat">
-        <div class="stat-val">WebGL</div>
+        <div class="stat-val">Cross</div>
         <div class="stat-label">Platform</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- İŞ ORTAKLARI -->
+<section class="partners-section">
+  <p class="partners-heading">İş Ortakları</p>
+  <div class="partners-track-wrapper">
+    <div class="partners-track" id="partnersTrack">
+      <!-- Set 1 -->
+      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
+      <!-- Set 2 — sonsuz döngü için kopya -->
+      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
     </div>
   </div>
 </section>
@@ -1023,29 +1046,6 @@
     Kapat
   </button>
 </div>
-
-<!-- İŞ ORTAKLARI -->
-<section class="partners-section">
-  <p class="partners-heading">İş Ortakları</p>
-  <div class="partners-track-wrapper">
-    <div class="partners-track" id="partnersTrack">
-      <!-- Set 1 -->
-      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
-      <!-- Set 2 — sonsuz döngü için kopya -->
-      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
-      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
-    </div>
-  </div>
-</section>
 
 <footer>
   © 2025 Oyun Kataloğu — Tüm hakları saklıdır.
@@ -1241,6 +1241,28 @@ const GAMES = [
             "assets/screens/boslugu-doldur-5.png"
         ],
         webglPath: "games/boslugu-doldur/index.html",
+        platform: "WebGL · Kiosk & Dokunmatik"
+    },
+    {
+        id: 8,
+        title: "Şehrin Simgeleri Hafızaso",
+        category: "Çoktan Seçmeli",
+        mechanic: "Çoktan Seçmeli",
+        description: "Hızlı düşün, doğru simgeyi seç! Şehrin Simgeleri Hafızası ile ekranın üst kısmında gösterilen kültürel ögeleri incele, alt bölümdeki 4 farklı seçenek arasından doğru olanı süre tükenmeden işaretle. Hem görsel hafızanı güçlendireceğin hem de zamana karşı yarışacağın bu eğlenceli bulmaca deneyiminde rekor puanları sen kır!",
+        features: [
+            "Kurumsal kimliğe uygun özelleştirme",
+            "Kiosk, dokunmatik ekran ve tablet uyumlu",
+            "Çevrimdışı veya çevrimiçi çalışabilir"
+        ],
+        brands: ["İstanbul Valiliği"],
+        logo: "assets/logos/sehrin-simgeleri.png",
+        screenshots: [
+            "assets/screens/sehrin-simgeleri-1.png",
+            "assets/screens/sehrin-simgeleri-2.png",
+            "assets/screens/sehrin-simgeleri-3.png",
+            "assets/screens/sehrin-simgeleri-4.png"
+        ],
+        webglPath: "games/sehrin-simgeleri/index.html",
         platform: "WebGL · Kiosk & Dokunmatik"
     }
 ];
@@ -1474,20 +1496,23 @@ function initPartners() {
   const track = document.getElementById('partnersTrack');
   if (!track) return;
 
-  /* Tüm görseller yüklenince genişliği ölç */
   const imgs = track.querySelectorAll('img');
   let loaded = 0;
   const start = () => {
-    /* Toplam genişliğin tam yarısı kadar kaydır (Set 1 = Set 2) */
-    const half = track.scrollWidth / 2;
-    track.style.setProperty('--scroll-from', `-${half}px`);
-    track.style.animation = `scroll-right 24s linear infinite`;
+    /* Set 1'in tam genişliği = toplam / 2 */
+    const setWidth = track.scrollWidth / 2;
+    /* Sağdan sola: 0 → -setWidth px (tam bir set) */
+    track.style.setProperty('--marquee-to', `-${setWidth}px`);
+    const duration = Math.max(12, setWidth / 80); /* hız: ~80px/s */
+    track.style.animation = `marquee ${duration}s linear infinite`;
   };
   if (!imgs.length) { start(); return; }
   imgs.forEach(img => {
     if (img.complete) { loaded++; if (loaded === imgs.length) start(); }
-    else { img.addEventListener('load',  () => { loaded++; if (loaded === imgs.length) start(); });
-           img.addEventListener('error', () => { loaded++; if (loaded === imgs.length) start(); }); }
+    else {
+      img.addEventListener('load',  () => { loaded++; if (loaded === imgs.length) start(); });
+      img.addEventListener('error', () => { loaded++; if (loaded === imgs.length) start(); });
+    }
   });
 }
 initPartners();
