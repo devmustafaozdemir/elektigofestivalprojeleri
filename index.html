@@ -752,12 +752,12 @@
       display: flex;
       gap: 48px;
       width: max-content;
-      animation: scroll-left 22s linear infinite;
+      animation: scroll-right 22s linear infinite;
     }
     .partners-track:hover { animation-play-state: paused; }
-    @keyframes scroll-left {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+    @keyframes scroll-right {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
     }
     .partner-logo {
       display: flex;
@@ -1029,14 +1029,20 @@
   <p class="partners-heading">İş Ortakları</p>
   <div class="partners-track-wrapper">
     <div class="partners-track" id="partnersTrack">
-      <!-- Logolar buraya gelecek — şimdilik placeholder -->
-      <div class="partner-logo"><span class="partner-placeholder">Ülker</span></div>
-      <div class="partner-logo"><span class="partner-placeholder">Sıfır Atık Vakfı</span></div>
-      <div class="partner-logo"><span class="partner-placeholder">ElektiGO</span></div>
-      <!-- Sonsuz döngü için kopyası -->
-      <div class="partner-logo"><span class="partner-placeholder">Ülker</span></div>
-      <div class="partner-logo"><span class="partner-placeholder">Sıfır Atık Vakfı</span></div>
-      <div class="partner-logo"><span class="partner-placeholder">ElektiGO</span></div>
+      <!-- Set 1 -->
+      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikkaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
+      <!-- Set 2 — sonsuz döngü için kopya -->
+      <div class="partner-logo"><img src="assets/firma-logos/ulker.png" alt="Ülker"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/sifiratikvakfi.png" alt="Sıfır Atık Vakfı"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/etno.png" alt="Etno"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/eminevim.png" alt="Eminevim"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/enerjivetabiikkaynaklar.png" alt="Enerji ve Tabii Kaynaklar"></div>
+      <div class="partner-logo"><img src="assets/firma-logos/istanbulvaliligi.png" alt="İstanbul Valiliği"></div>
     </div>
   </div>
 </section>
